@@ -8,9 +8,19 @@ const styles=['fumé au bois d’érable','cuit au BBQ','saisi dans la fonte','f
 const extras=['cheddar fort','oignon rouge','jalapeños','patates douces','cornichons','mozzarella','sauce BBQ','mayonnaise épicée','champignons','oignons frits'];
 const levels=['Questionnable','Ça passe après 3 bières','Mauvaise idée','Appelle tes chums','Crime culinaire'];
 function pick(a){return a[Math.floor(Math.random()*a.length)]} function unique(a,n){return [...a].sort(()=>Math.random()-.5).slice(0,n)}
-function generate(){let lvl=+level.value;let ms=unique(meats,Math.min(2+Math.floor((lvl-1)/2),4));let os=unique(odds,Math.min(1+Math.floor(lvl/3),3));let bs=pick(bases),st=pick(styles),ex=unique(extras,2+Math.floor(lvl/3));
-title.textContent=`${bs.toUpperCase()} DE ${ms[0].toUpperCase()} ET ${ms[1].toUpperCase()} — ${os[0].toUpperCase()}`;desc.textContent=`Une ${bs} ${st}, bourrée de mauvais jugement et pourtant assez crédible pour être essayée.`;badges.innerHTML=`<span class="badge">🔥 ${st}</span><span class="badge">🥩 ${ms.length} sortes d’animal mort</span><span class="badge">⚠ ${levels[lvl-1]}</span>`;
-let ing=[];ms.forEach((m,i)=>ing.push(`<li><span class="animal">${i?'400':'500'} g de ${m}</span></li>`));os.forEach(o=>ing.push(`<li><span class="odd">${o}</span> — quantité guidée par l’instinct</li>`));ex.forEach(e=>ing.push(`<li>${e}</li>`));ing.push(`<li>Base de ${bs} pour 4 personnes beaucoup trop confiantes</li>`,`<li>Sel, poivre et épices BBQ sans retenue</li>`);ingredients.innerHTML=ing.join('');
-let step=[`Préparer le ${ms[0]} et le ${ms[1]}; assaisonner généreusement.`,ms.length>2?`Ajouter ${ms.slice(2).join(' et ')}. À ce stade, il est trop tard pour reculer.`:`Faire dorer la viande jusqu’à obtenir une belle croûte.`,`Incorporer ${os.join(' et ')}. Ne pas chercher à comprendre.`,`Assembler le tout façon ${bs} avec ${ex.join(' et ')}.`,`Terminer le tout ${st}.`,lvl>=4?`Ajouter une couche supplémentaire de ${pick(odds)} parce que manifestement personne ne supervise cette cuisine.`:`Goûter et ajuster la sauce, le sel et le niveau de regret.`,`Servir immédiatement. Éviter d’expliquer la recette avant la première bouchée.`];steps.innerHTML=step.map(x=>`<li>${x}</li>`).join('')}
-level.oninput=()=>{levelText.textContent=levels[level.value-1]};generate.onclick=generate;generate();
+function generate(){let lvl=+document.getElementById('level').value;let ms=unique(meats,Math.min(2+Math.floor((lvl-1)/2),4));let os=unique(odds,Math.min(1+Math.floor(lvl/3),3));let bs=pick(bases),st=pick(styles),ex=unique(extras,2+Math.floor(lvl/3));
+document.getElementById('title').textContent=`${bs.toUpperCase()} DE ${ms[0].toUpperCase()} ET ${ms[1].toUpperCase()} — ${os[0].toUpperCase()}`;document.getElementById('desc').textContent=`Une ${bs} ${st}, bourrée de mauvais jugement et pourtant assez crédible pour être essayée.`;document.getElementById('badges').innerHTML=`<span class="badge">🔥 ${st}</span><span class="badge">🥩 ${ms.length} sortes d’animal mort</span><span class="badge">⚠ ${levels[lvl-1]}</span>`;
+let ing=[];ms.forEach((m,i)=>ing.push(`<li><span class="animal">${i?'400':'500'} g de ${m}</span></li>`));os.forEach(o=>ing.push(`<li><span class="odd">${o}</span> — quantité guidée par l’instinct</li>`));ex.forEach(e=>ing.push(`<li>${e}</li>`));ing.push(`<li>Base de ${bs} pour 4 personnes beaucoup trop confiantes</li>`,`<li>Sel, poivre et épices BBQ sans retenue</li>`);document.getElementById('ingredients').innerHTML=ing.join('');
+let step=[`Préparer le ${ms[0]} et le ${ms[1]}; assaisonner généreusement.`,ms.length>2?`Ajouter ${ms.slice(2).join(' et ')}. À ce stade, il est trop tard pour reculer.`:`Faire dorer la viande jusqu’à obtenir une belle croûte.`,`Incorporer ${os.join(' et ')}. Ne pas chercher à comprendre.`,`Assembler le tout façon ${bs} avec ${ex.join(' et ')}.`,`Terminer le tout ${st}.`,lvl>=4?`Ajouter une couche supplémentaire de ${pick(odds)} parce que manifestement personne ne supervise cette cuisine.`:`Goûter et ajuster la sauce, le sel et le niveau de regret.`,`Servir immédiatement. Éviter d’expliquer la recette avant la première bouchée.`];document.getElementById('steps').innerHTML=step.map(x=>`<li>${x}</li>`).join('')}
+const levelEl=document.getElementById('level');
+const levelTextEl=document.getElementById('levelText');
+const generateBtn=document.getElementById('generate');
+const titleEl=document.getElementById('title');
+const descEl=document.getElementById('desc');
+const badgesEl=document.getElementById('badges');
+const ingredientsEl=document.getElementById('ingredients');
+const stepsEl=document.getElementById('steps');
+levelEl.addEventListener('input',()=>{levelTextEl.textContent=levels[levelEl.value-1]});
+generateBtn.addEventListener('click',generate);
+generate();
 </script></body></html>
